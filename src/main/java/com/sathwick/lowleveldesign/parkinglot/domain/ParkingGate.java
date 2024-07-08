@@ -1,8 +1,7 @@
 package com.sathwick.lowleveldesign.parkinglot.domain;
 
-import com.sathwick.lowleveldesign.parkinglot.domain.enums.ParkingSlotType;
+import com.sathwick.lowleveldesign.parkinglot.domain.enums.ParkingGateType;
 
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,18 +11,15 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Setter
 @Getter
-public class ParkingSlot {
+@Setter
+@Entity
+public class ParkingGate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long parkingSlotId;
-    private boolean isOccupied;
-    @Embedded
-    private Vehicle vehicle;
-    private ParkingSlotType parkingSlotType;
+    private long parkingGateId;
+    private ParkingGateType parkingGateType;
     @ManyToOne
-    @JoinColumn(name = "parking_floor_id")
-    private ParkingFloor ParkingFloor;
+    @JoinColumn(name = "parking_lot_id")
+    private ParkingLot parkingLot;
 }
