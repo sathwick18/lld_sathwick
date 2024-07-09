@@ -2,7 +2,6 @@ package com.sathwick.lowleveldesign.parkinglot.domain.payment;
 
 import com.sathwick.lowleveldesign.parkinglot.domain.enums.PaymentType;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
