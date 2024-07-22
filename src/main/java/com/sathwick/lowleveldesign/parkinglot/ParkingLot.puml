@@ -1,0 +1,99 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+enum ParkingSpotType{
+    SMALL,
+    MEDIUM,
+    LARGE,
+    EV
+}
+
+enum VehicleType{
+    MOTORCYCLE,
+    CAR,
+    SUV,
+    EV
+}
+
+class ParkingSpot{
+    boolean isOccupied(),
+    void parkVehicle(),
+    void unparkVehicle(),
+    - parkingSpotType: ParkingSpotType
+}
+
+class Vehicle {
+    - licensePlate: stirng
+    - type: VehicleType
+}
+
+class ParkingFloor {
+    - CompatibleParkingSpotTypeFactory: CompatibleParkingSpotTypeFactory
+    - parkingSpots: List<ParkingSpot>
+
+    findParkingSpot(vehicleType, parkingStrategy)
+    parkVehicle(parkingSpotType, Vehicle)
+    unParkVehicle(parkingSpotType)
+    updateParkingDashboard() // notifier
+    addParkingSpot(parkingSpotType)
+    removeParkingSpot(parkingSpotType)
+}
+
+ParkingFloor --> CompatibleParkingSpotTypeFactory
+
+ParkingFloor --> ParkingDashboard
+
+ParkingFloor ..> ParkingStrategy
+
+class CompatibleParkingSpotTypeFactory{
+    getCompatibleParkingSpotType(vehicleType: VehicleType): CompatibleParkingSpotType
+}
+
+CompatibleParkingSpotTypeFactory --> CompatibleParkingSpotType
+
+abstract class CompatibleParkingSpotType {
+    nextCompatibleSize: ParkingSpotChain
+    abstract getParkingSpotType(parkingSpots: List<ParkingSpot>)
+}
+
+CompatibleParkingSpotType -> CompatibleParkingSpotType
+
+interface ParkingStrategy() {
+    findParkingSpot(parkingSpotType, parkingFloorMetadata)
+}
+
+class NearestToElevatorParkingStrategy implements ParkingStrategy
+class NearestToExitParkingStrategy implements ParkingStrategy
+class NearestToEntranceParkingStrategy implements ParkingStrategy
+
+'Singleton
+class ParkingLotService {
+    - parkingFloors: List<ParkingFloor>
+
+}
+
+ParkingLotService "1" --> "*" ParkingFloor
+
+
+
+class ParkingTicket
+
+class EntranceGate
+
+class ExitGate
+
+class Payment
+
+
+
+ParkingSpot --> Vehicle
+
+ParkingFloor "1" --> "*" ParkingSpot
+
+
+
+
+
+
+@enduml
