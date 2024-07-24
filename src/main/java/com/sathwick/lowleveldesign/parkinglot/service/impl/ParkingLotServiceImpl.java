@@ -74,5 +74,6 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         for(int i = 1; i <= numOfExitGates; i++) {
             parkingGateService.addParkingGate(ParkingGate.builder().parkingGateType(ParkingGateType.EXIT).parkingLot(ParkingLot.builder().parkingLotId(parkingLotId).build()).build());
         }
+        log.info("Created ParkingLot Successfully with Entrance and Exit Gates: {}", parkingLotId);
     }
 }
