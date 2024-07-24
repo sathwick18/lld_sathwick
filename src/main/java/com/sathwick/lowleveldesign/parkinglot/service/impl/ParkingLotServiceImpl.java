@@ -1,5 +1,6 @@
 package com.sathwick.lowleveldesign.parkinglot.service.impl;
 
+import com.sathwick.lowleveldesign.parkinglot.repository.ParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +23,20 @@ import java.util.List;
 @Slf4j
 public class ParkingLotServiceImpl implements ParkingLotService {
 
-    @Autowired
-    private ParkingFloorService parkingFloorService;
-    @Autowired
-    private ParkingGateService parkingGateService;
+    private final ParkingFloorService parkingFloorService;
+    private final ParkingGateService parkingGateService;
+    private final ParkingLotRepository parkingLotRepository;
+
+    public ParkingLotServiceImpl(ParkingFloorService parkingFloorService, ParkingGateService parkingGateService, ParkingLotRepository parkingLotRepository) {
+        this.parkingFloorService = parkingFloorService;
+        this.parkingGateService = parkingGateService;
+        this.parkingLotRepository = parkingLotRepository;
+    }
 
     @Override
     public void addParkingLot(long parkingLotId, int numFloors, ParkingSlotsCount[] parkingSlotsCount) {
         log.info("Adding parking lot: {}", parkingLotId);
+        parkingLotRepository.save(ParkingLot.builder().parkingLotId(parkingLotId).build());
         for (int i = 1; i <= numFloors; i++) {
             log.info("Adding parking floor: {}", i);
             ParkingFloorBuilder parkingFloorBuilder = ParkingFloor.builder();
@@ -39,14 +46,15 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
             ParkingFloor parkingFloor = parkingFloorService.getParkingFloorByFloorNumber(i);
             List<ParkingSlot> parkingSlots = new ArrayList<>();
-            for(int j = 1; j <= parkingSlotsCount.length; j++) {
+            for(int j = 0; j < parkingSlotsCount.length; j++) {
                 for(int k=1; k <= parkingSlotsCount[j].getNumOfSlots(); k++) {
-                    parkingSlots.add(ParkingSlot.builder().ParkingFloor(parkingFloor).parkingSlotType(parkingSlotsCount[j].getParkingSlotType()).build());
+                    parkingSlots.add(ParkingSlot.builder().parkingFloor(parkingFloor).parkingSlotType(parkingSlotsCount[j].getParkingSlotType()).build());
                 }
             }
             parkingFloor.setParkingSlots(parkingSlots);
             parkingFloorService.updateParkingFloor(parkingFloor);
         }
+        log.info("Created ParkingLot Successfully: {}", parkingLotId);
     }
 
     @Override

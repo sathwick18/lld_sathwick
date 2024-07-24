@@ -13,8 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ParkingSlotServiceImpl implements ParkingSlotService{
 
-    @Autowired
-    private ParkingSlotRepository parkingSlotRepository;
+    private final ParkingSlotRepository parkingSlotRepository;
+
+    public ParkingSlotServiceImpl(ParkingSlotRepository parkingSlotRepository) {
+        this.parkingSlotRepository = parkingSlotRepository;
+    }
 
     @Override
     public void addParkingSlot(ParkingSlot parkingSlot) {

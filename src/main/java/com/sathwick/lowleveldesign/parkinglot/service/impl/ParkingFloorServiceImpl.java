@@ -1,7 +1,5 @@
 package com.sathwick.lowleveldesign.parkinglot.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import com.sathwick.lowleveldesign.parkinglot.domain.ParkingFloor;
@@ -13,8 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ParkingFloorServiceImpl implements ParkingFloorService {
-    @Autowired
-    private ParkingFloorRepository parkingFloorRepository;
+
+    private final ParkingFloorRepository parkingFloorRepository;
+
+    public ParkingFloorServiceImpl(ParkingFloorRepository parkingFloorRepository) {
+        this.parkingFloorRepository = parkingFloorRepository;
+    }
 
     @Override
     public void addParkingFloor(ParkingFloor parkingFloor) {

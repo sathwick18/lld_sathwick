@@ -1,18 +1,19 @@
-package com.sathwick.lowleveldesign.lowleveldesignbysathwick;
+package com.sathwick.lowleveldesign.main;
 
 import com.sathwick.lowleveldesign.parkinglot.domain.enums.ParkingSlotType;
 import com.sathwick.lowleveldesign.parkinglot.service.ParkingLotService;
 import com.sathwick.lowleveldesign.parkinglot.service.custom_datatypes.ParkingSlotsCount;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 
 @Component
-@ComponentScan(basePackages = "com.sathwick.lowleveldesign.parkinglot")
 public class ParkingLotMain {
 
     private ParkingLotService parkingLotService;
 
+    @Autowired
     public ParkingLotMain(ParkingLotService parkingLotService){
         this.parkingLotService = parkingLotService;
     }

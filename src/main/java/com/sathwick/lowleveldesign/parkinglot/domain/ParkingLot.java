@@ -22,8 +22,8 @@ public class ParkingLot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long parkingLotId;
 
-    @OneToMany(mappedBy = "parking_lot", cascade = jakarta.persistence.CascadeType.ALL, fetch = jakarta.persistence.FetchType.EAGER)
+    @OneToMany(mappedBy = "parkingLot", cascade = jakarta.persistence.CascadeType.ALL, fetch = jakarta.persistence.FetchType.EAGER)
     private List<ParkingFloor> parkingFloors;
-    @OneToMany(mappedBy = "parking_lot", cascade = jakarta.persistence.CascadeType.ALL, fetch = jakarta.persistence.FetchType.EAGER)
+    @OneToMany(mappedBy = "parkingLot", cascade = jakarta.persistence.CascadeType.ALL, fetch = jakarta.persistence.FetchType.EAGER)
     private List<ParkingGate> parkingGates;
 }

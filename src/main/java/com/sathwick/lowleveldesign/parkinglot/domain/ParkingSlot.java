@@ -27,5 +27,5 @@ public class ParkingSlot {
     private ParkingSlotType parkingSlotType;
     @ManyToOne
     @JoinColumn(name = "parking_floor_id")
-    private ParkingFloor ParkingFloor;
+    private ParkingFloor parkingFloor;
 }

@@ -13,8 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ParkingGateServiceImpl implements ParkingGateService{
     
-    @Autowired
-    ParkingGateRepository parkingGateRepository;
+    private final ParkingGateRepository parkingGateRepository;
+
+    public ParkingGateServiceImpl(ParkingGateRepository parkingGateRepository) {
+        this.parkingGateRepository = parkingGateRepository;
+    }
 
     @Override
     public void addParkingGate(ParkingGate parkingGate) {
