@@ -2,6 +2,7 @@ package com.sathwick.lowleveldesign.parkinglot.service.impl;
 
 import com.sathwick.lowleveldesign.parkinglot.repository.ParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.sathwick.lowleveldesign.parkinglot.domain.ParkingFloor;
@@ -37,22 +38,29 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     public void addParkingLot(long parkingLotId, int numFloors, ParkingSlotsCount[] parkingSlotsCount) {
         log.info("Adding parking lot: {}", parkingLotId);
         parkingLotRepository.save(ParkingLot.builder().parkingLotId(parkingLotId).build());
-        for (int i = 1; i <= numFloors; i++) {
-            log.info("Adding parking floor: {}", i);
-            ParkingFloorBuilder parkingFloorBuilder = ParkingFloor.builder();
-            parkingFloorBuilder.parkingLot(ParkingLot.builder().parkingLotId(parkingLotId).build());
-            parkingFloorBuilder.floorNumber(i);
-            parkingFloorService.addParkingFloor(parkingFloorBuilder.build());
+        try {
+            for (int i = 1; i <= numFloors; i++) {
+                log.info("Adding parking floor: {}", i);
+                ParkingFloorBuilder parkingFloorBuilder = ParkingFloor.builder();
+                parkingFloorBuilder.parkingLot(ParkingLot.builder().parkingLotId(parkingLotId).build());
+                parkingFloorBuilder.floorNumber(i);
+                parkingFloorService.addParkingFloor(parkingFloorBuilder.build());
 
-            ParkingFloor parkingFloor = parkingFloorService.getParkingFloorByFloorNumber(i);
-            List<ParkingSlot> parkingSlots = new ArrayList<>();
-            for(int j = 0; j < parkingSlotsCount.length; j++) {
-                for(int k=1; k <= parkingSlotsCount[j].getNumOfSlots(); k++) {
-                    parkingSlots.add(ParkingSlot.builder().parkingFloor(parkingFloor).parkingSlotType(parkingSlotsCount[j].getParkingSlotType()).build());
+                ParkingFloor parkingFloor = parkingFloorService.getParkingFloorByFloorNumber(i);
+                List<ParkingSlot> parkingSlots = new ArrayList<>();
+                for (int j = 0; j < parkingSlotsCount.length; j++) {
+                    for (int k = 1; k <= parkingSlotsCount[j].getNumOfSlots(); k++) {
+                        parkingSlots.add(ParkingSlot.builder().parkingFloor(parkingFloor).parkingSlotType(parkingSlotsCount[j].getParkingSlotType()).build());
+                    }
                 }
+                parkingFloor.setParkingSlots(parkingSlots);
+                parkingFloorService.updateParkingFloor(parkingFloor);
             }
-            parkingFloor.setParkingSlots(parkingSlots);
-            parkingFloorService.updateParkingFloor(parkingFloor);
+        }
+        catch (DataIntegrityViolationException e){
+            log.error("Failed to create ParkingLot: {}", parkingLotId);
+            log.error(e.getMessage());
+            throw new IllegalArgumentException("Failed to create ParkingLot: " + parkingLotId);
         }
         log.info("Created ParkingLot Successfully: {}", parkingLotId);
     }
