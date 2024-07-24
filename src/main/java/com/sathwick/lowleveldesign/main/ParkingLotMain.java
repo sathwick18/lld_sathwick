@@ -24,6 +24,6 @@ public class ParkingLotMain {
                 new ParkingSlotsCount(ParkingSlotType.LARGE, 400),
                 new ParkingSlotsCount(ParkingSlotType.EXTRA_LARGE, 50)
         };
-        parkingLotService.addParkingLot(1, 4, parkingSlotsCount);
+        parkingLotService.addParkingLot(1, 4, parkingSlotsCount, 4,2);
     }
 }

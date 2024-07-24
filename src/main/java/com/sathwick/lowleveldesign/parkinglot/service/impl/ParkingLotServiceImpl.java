@@ -60,7 +60,6 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         catch (DataIntegrityViolationException e){
             log.error("Failed to create ParkingLot: {}", parkingLotId);
             log.error(e.getMessage());
-            throw new IllegalArgumentException("Failed to create ParkingLot: " + parkingLotId);
         }
         log.info("Created ParkingLot Successfully: {}", parkingLotId);
     }
