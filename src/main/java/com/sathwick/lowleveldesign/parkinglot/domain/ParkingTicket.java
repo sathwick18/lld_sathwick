@@ -2,6 +2,8 @@ package com.sathwick.lowleveldesign.parkinglot.domain;
 
 import java.sql.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Embedded;
@@ -14,6 +16,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class ParkingTicket {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
